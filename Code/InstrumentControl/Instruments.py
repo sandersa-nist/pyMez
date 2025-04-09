@@ -5,8 +5,8 @@
 # Created:     2016/06/23
 #-----------------------------------------------------------------------------
 """ The Module Instruments Contains Classes and functions to control 
-instruments; GPIB,RS232 and other visa instruments. Instrument control classes are
-wrappers around the pyvisa instrument class with static xml based metadata added in. In addition,
+instruments; GPIB,RS232 and other pyvisa instruments. Instrument control classes are
+wrappers around the pypyvisa instrument class with static xml based metadata added in. In addition,
 instruments have an emulation_mode that allows for the tracking of commands when not connected to a
 viable communications bus.
 
@@ -52,10 +52,10 @@ except:
     print('PIL is required for some camera operations')
     PIL_AVAILABLE=0
 try:
-    import visa,pyvisa
+    import pyvisa
 except:
     print("To control comm and gpib instruments this module requires the package PyVisa")
-    print(" Please download it at  http://pyvisa.sourceforge.net/ ")
+    print(" Please download it at  http://pypyvisa.sourceforge.net/ ")
     print(" Or add it to the Python Path")
     pass 
 try:
@@ -143,7 +143,7 @@ def emulation_data(data=None):
 def whos_there():
     """Whos_there is a function that prints the idn string for all
     GPIB instruments connected"""
-    resource_manager = visa.ResourceManager()
+    resource_manager = pyvisa.ResourceManager()
     resource_list=resource_manager.list_resources()
     gpib_resources=[]
     gpib_idn_dictionary={}
@@ -168,7 +168,7 @@ def whos_there():
 def determine_instrument_type_from_string(string):
     """ Given a string returns the instrument type"""
 
-    if type(string) in StringTypes:
+    if isinstance(string,str):
          # Start with the easy ones
          for instrument_type in INSTRUMENT_TYPES:
             match= re.compile(instrument_type,re.IGNORECASE)
@@ -195,15 +195,15 @@ def determine_instrument_type(object):
     """Tries to return an instrument type given an address, name, serial #
      or class instance"""
     # attributes that normally have the type hidden in there
-    # should be in the order of likelyhood 
-    attritbute_names=['instrument_type','address','serial','Id'] 
+    # should be in the order of likelihood 
+    attribute_names=['instrument_type','address','serial','Id'] 
     # Check to see if it is a string and then go through the possibilities
-    if type(object) in StringTypes:
+    if isinstance(object,str):
         return determine_instrument_type_from_string(object)
     # If it is a object or class look around in normal names looking for a string
     # to process
-    elif isinstance(object, InstanceType) or ClassType:
-        for attribute in attritbute_names:
+    elif isinstance(object, VisaInstrument):
+        for attribute in attribute_names:
             try:
                 if attribute in dir(object):
                     string=eval('object.%s'%attribute)
@@ -262,7 +262,7 @@ class VisaInstrumentError(Exception):
 
 class EmulationInstrument(InstrumentSheet):
     """ General Class to communicate with COMM and GPIB instruments
-    This is a blend of the pyvisa resource and an xml description. """
+    This is a blend of the pypyvisa resource and an xml description. """
 
     def __init__(self, resource_name=None, **options):
         """ Intializes the VisaInstrument Class"""
@@ -304,8 +304,8 @@ class EmulationInstrument(InstrumentSheet):
         self.write_buffer=[]
         self.read_buffer=[]
         self.history=[]
-        #self.resource_manager = visa.ResourceManager()
-        # Call the visa instrument class-- this gives ask,write,read
+        #self.resource_manager = pyvisa.ResourceManager()
+        # Call the pyvisa instrument class-- this gives ask,write,read
         #self.resource = self.resource_manager.open_resource(self.instrument_address)
         self.current_state = self.get_state()
 
@@ -438,7 +438,7 @@ class EmulationInstrument(InstrumentSheet):
         
 class VisaInstrument(InstrumentSheet):
     """ General Class to communicate with COMM and GPIB instruments
-    This is a blend of the pyvisa resource and an xml description. If there is no device connected
+    This is a blend of the pypyvisa resource and an xml description. If there is no device connected
      enters into a emulation mode. Where all the commands are logged as .history and the attribute emulation_mode=True"""
     def __init__(self,resource_name=None,**options):
         """ Initializes the VisaInstrument Class"""
@@ -478,8 +478,8 @@ class VisaInstrument(InstrumentSheet):
         self.state_buffer=[]
         self.STATE_BUFFER_MAX_LENGTH=10
         try:
-            self.resource_manager=visa.ResourceManager()
-            # Call the visa instrument class-- this gives ask,write,read
+            self.resource_manager=pyvisa.ResourceManager()
+            # Call the pyvisa instrument class-- this gives ask,write,read
             self.resource=self.resource_manager.open_resource(self.instrument_address)
             self.emulation_mode = False
         except:
@@ -1868,8 +1868,6 @@ def test_determine_instrument_type():
     new.instrument_type='Ocean_Optics'
     print(new.instrument_type)
     print('Type is %s'%determine_instrument_type(new))
-    TF=(isinstance(new, InstanceType) or ClassType)
-    print(TF)
     print(dir(new))
     print('instrument_type' in dir(new))
         
