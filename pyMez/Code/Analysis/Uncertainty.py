@@ -65,7 +65,7 @@ def normalized_error_test(value_1,value_2,uncertainty,expansion_factor=1):
         return False
 
 def standard_error(value_1,uncertainty_value_1,value_2,uncertainty_value_2=0,expansion_factor=2):
-    """calculates the standard errror (delta value/ (expansion factor * Sqrt(ua^2+ub^2)))"""
+    """calculates the standard error (delta value/ (expansion factor * Sqrt(ua^2+ub^2)))"""
     return abs((value_2-value_1))/(math.sqrt(uncertainty_value_1**2+uncertainty_value_2**2)*expansion_factor)
 
 def standard_error_data_table(table_1,table_2,**options):
@@ -74,7 +74,7 @@ def standard_error_data_table(table_1,table_2,**options):
     in the form [[x, y1, y2,...]..] Uncertainties can be specified as a column name in the respective
     table, fractional, constant, or a function of the values. The returned table is an object
     of the class StandardErrorModel(AsciiDataTable) that has data in the form
-    [[independent_varaible,SEValue1,SEValue2...]...] where column names are formed by
+    [[independent_variable,SEValue1,SEValue2...]...] where column names are formed by
     appending SE to the value column names. To plot the table use result.show()
     """
     defaults={}
