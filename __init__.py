@@ -52,6 +52,7 @@ VERBOSE_IMPORT=True
 TIMED_IMPORT=True
 
 "Constant that determines if import statements are echoed to output"
+__version__="1.0.0"
 # control the modules loaded in the API, this should be included in a pyMez Settings file
 # The new module load scheme can be for module in API_MODULES.keys()
 API_MODULES={"Code.Utils.Names":True,
