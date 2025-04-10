@@ -6,6 +6,10 @@ Should work on both python2.7 and python3.+
 ### [pypi repository](https://pypi.org/project/pyMez/) - Stable Release For pip installation
 ### [github](https://github.com/aricsanders/pyMez)  - Bleeding Edge Development Repository
 
+```shell
+pip install git+https://github.com/sandersa-nist/pyMez.git
+```
+
 Installation using pip
 ----------------------
 `>>pip install pyMez`

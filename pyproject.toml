@@ -24,7 +24,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["lxml","pyvisa","numpy","scipy","pandas","sympy","matplotlib","statsmodels","django","networkx","pdfkit","h5py","pywin32"]
+dependencies = ["lxml","pyvisa","numpy","scipy","pandas","sympy","matplotlib","statsmodels","django","networkx","pdfkit","h5py","pywin32","ipywidgets"]
 
 [project.urls]
 Documentation = "https://github.com/sandersa/pymez#readme"
