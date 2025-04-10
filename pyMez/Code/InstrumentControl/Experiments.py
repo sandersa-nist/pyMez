@@ -45,11 +45,12 @@ except:
     raise
 
 try: 
-    from scipy import linspace,stats
+    from scipy import stats
 except:
     print(""" This module uses scipy linspace, if scipy is not available you must
     define your own linspace function under this comment""")
     raise
+from numpy import linspace
 #-------------------------------------------------------------------------------
 # Module Constants
 
@@ -158,7 +159,7 @@ class KeithleyIV():
         self.data_dictionary['Data_Description']={'Current':'Current in Amps',
         'Voltage':'Voltage in Volts','Index':'Order in which the point was taken',
         'Instrument_Description':KEITHLEY_INSTRUMENT_SHEET,
-        'Date':datetime.datetime.utcnow().isoformat(),
+        'Date':datetime.datetime.now(datetime.UTC),
         'Notes':self.notes,'Name':self.name,'Resistance':str(self.resistance)}
         self.data_dictionary['Data']=self.data_list
         try:

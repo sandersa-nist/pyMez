@@ -553,7 +553,7 @@ class XMLLog(XMLBase):
             pass
         else:
             # Add the Date attribute, this is the time when the entry was logged
-            date=datetime.datetime.utcnow().isoformat()
+            date=datetime.datetime.now(datetime.UTC)
             Date_attribute=self.document.createAttribute('Date')
             new_entry.setAttributeNode(Date_attribute)
             new_entry.setAttribute('Date',str(date))
@@ -618,7 +618,7 @@ class XMLLog(XMLBase):
         new_entry.setAttributeNode(Index_attribute)
         new_entry.setAttribute('Index',str(-1))
         # Add the Date attribute, this is the time when the entry was logged
-        date=datetime.datetime.utcnow().isoformat()
+        date=datetime.datetime.now(datetime.UTC)
         Date_attribute=self.document.createAttribute('Date')
         new_entry.setAttributeNode(Date_attribute)
         new_entry.setAttribute('Date',str(date))
@@ -1087,7 +1087,7 @@ class FileRegister(XMLBase):
         attribute_values = {}
         attribute_values['URL'] = URL
         attribute_values['Id'] = self.create_Id(URL)
-        attribute_values['Date'] = datetime.datetime.utcnow().isoformat()
+        attribute_values['Date'] = datetime.datetime.now(datetime.UTC)
         type_code = attribute_values['Id'].split('.')[-1][0]
         if type_code in ['1', '1']:
             attribute_values['Type'] = "Directory"
@@ -1523,7 +1523,7 @@ class InstrumentState(XMLBase):
             # Add the Date attribute, this is the time when the state was created
             self.add_state_description()
             timestamp_element = self.document.createElement("State_Timestamp")
-            text = str(datetime.datetime.utcnow().isoformat())
+            text = str(datetime.datetime.now(datetime.UTC))
             timestamp_element.appendChild(self.document.createTextNode(text))
             state_description = self.document.getElementsByTagName("State_Description")[0]
             state_description.appendChild(timestamp_element)

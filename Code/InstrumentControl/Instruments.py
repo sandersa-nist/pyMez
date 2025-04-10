@@ -184,7 +184,7 @@ def determine_instrument_type_from_string(string):
                 text=f.read()
                 if re.search(string,text):
                     tag_match=re.search(
-                    r'<Instrument_Type>(?P<instrument_type>\w+)</Instrument_Type>',
+                    '<Instrument_Type>(?P<instrument_type>\w+)</Instrument_Type>',
                     text)
                     try:
                         return tag_match.group('instrument_type')
@@ -1099,8 +1099,8 @@ class VNA(VisaInstrument):
         reverse_switch_string = self.query("CALC:DATA? SDATA")
 
         # Anritsu Specific String Parsing
-        foward_switch_string=re.sub(r"#\d+\n","",foward_switch_string)
-        reverse_switch_string=re.sub(r"#\d+\n","",reverse_switch_string)
+        foward_switch_string=re.sub("#\d+\n","",foward_switch_string)
+        reverse_switch_string=re.sub("#\d+\n","",reverse_switch_string)
 
         # Now parse the string
         foward_switch_list = foward_switch_string.replace("\n", "").split(",")
@@ -1179,10 +1179,10 @@ class VNA(VisaInstrument):
         s22_string = self.query('CALC:DATA? SDATA')
 
         # String Parsing, Vector star specific, but no harm to Keysight, Rohde
-        s11_string=re.sub(r"#\d+\n","",s11_string)
-        s12_string=re.sub(r"#\d+\n","",s12_string)
-        s21_string=re.sub(r"#\d+\n","",s21_string)
-        s22_string=re.sub(r"#\d+\n","",s22_string)
+        s11_string=re.sub("#\d+\n","",s11_string)
+        s12_string=re.sub("#\d+\n","",s12_string)
+        s21_string=re.sub("#\d+\n","",s21_string)
+        s22_string=re.sub("#\d+\n","",s22_string)
 
 
         s11_list = s11_string.replace("\n", "").split(",")
@@ -1392,8 +1392,8 @@ class VNA(VisaInstrument):
         b_string = self.query('CALC:DATA? SDATA')
 
         # Anritsu Specific String Parsing
-        a_string=re.sub(r"#\d+\n","",a_string)
-        b_string=re.sub(r"#\d+\n","",b_string)
+        a_string=re.sub("#\d+\n","",a_string)
+        b_string=re.sub("#\d+\n","",b_string)
 
         # String Parsing
         a_list = a_string.replace("\n", "").split(",")
@@ -1467,7 +1467,7 @@ class VNA(VisaInstrument):
 
         # Anritsu specific parsing
         for index,wave in enumerate(all_wave_raw_string):
-            all_wave_raw_string[index]=re.sub(r"#\d+\n","",wave)
+            all_wave_raw_string[index]=re.sub("#\d+\n","",wave)
 
         # String Parsing
         all_wave_list=[x.replace("\n","").split(",") for x in all_wave_raw_string]
