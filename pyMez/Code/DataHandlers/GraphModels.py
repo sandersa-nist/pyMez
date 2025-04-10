@@ -152,7 +152,7 @@ def to_node_name(node_data):
             node_name = "File"
             extension = ""
             try:
-                if re.search("\.", node_data):
+                if re.search(r"\.", node_data):
                     extension = node_data.split(".")[-1]
                     node_name = extension.title() + node_name
             except:
@@ -160,7 +160,7 @@ def to_node_name(node_data):
         elif fnmatch.fnmatch(node_data, "*.*"):
             node_name = "File"
             try:
-                if re.search("\.", node_data):
+                if re.search(r"\.", node_data):
                     extension = node_data.split(".")[-1]
                     node_name = extension.title() + node_name
             except:
@@ -214,7 +214,7 @@ def remove_circular_paths(path):
     # Todo: Track the error that leaves out a needed path sometimes
     # See http://localhost:8888/notebooks/Two_Port_Matrix_Parameters_Debug_20170105_001.ipynb
 
-    edge_pattern=re.compile("edge_(?P<begin_node>\w+)_(?P<end_node>\w+)_(?P<iterator>\w+)")
+    edge_pattern=re.compile(r"edge_(?P<begin_node>\w+)_(?P<end_node>\w+)_(?P<iterator>\w+)")
     past_locations=[]
 
     for index,edge in enumerate(path):
@@ -287,7 +287,7 @@ class Graph(object):
                                           "A list of strings with no \\n, created with string.splitlines()"],
                     "current_node": 'n1',
                     "state": [1, 0],
-                    "data": "This is a test string\n it has to have multiple lines \n and many characters 34%6\n^",
+                    "data": r"This is a test string\n it has to have multiple lines \n and many characters 34%6\n^",
                     "edge_2_to_1": edge_2_to_1,
                     "edge_1_to_2": edge_1_to_2
                     }
@@ -383,7 +383,7 @@ class Graph(object):
             print(path)
         for index, edge in enumerate(path):
             # print edge
-            edge_pattern = 'edge_(?P<begin_node>\w+)_(?P<end_node>\w+)_(?P<iterator>\w+)'
+            edge_pattern = r'edge_(?P<begin_node>\w+)_(?P<end_node>\w+)_(?P<iterator>\w+)'
             match = re.match(edge_pattern, edge)
             begin_node = match.groupdict()['begin_node']
             end_node = match.groupdict()['end_node']
@@ -409,7 +409,7 @@ class Graph(object):
         temp_node_names = self.node_names
         for index, edge in enumerate(path):
             # print edge
-            edge_pattern = 'edge_(?P<begin_node>\w+)_(?P<end_node>\w+)_(?P<iterator>\w+)'
+            edge_pattern = r'edge_(?P<begin_node>\w+)_(?P<end_node>\w+)_(?P<iterator>\w+)'
             match = re.match(edge_pattern, edge)
             begin_node = match.groupdict()['begin_node']
             end_node = match.groupdict()['end_node']
@@ -471,7 +471,7 @@ class Graph(object):
     def jump_to_external_node(self, external_node_name, **options):
         """Returns the result of the jump, the graph is left in the node that is the begining of the jump"""
         end_node = external_node_name
-        jump_pattern = 'jump_(?P<begin_node>\w+)_{0}_(?P<iterator>\w+)'.format(end_node)
+        jump_pattern = r'jump_(?P<begin_node>\w+)_{0}_(?P<iterator>\w+)'.format(end_node)
         for jump in self.jumps[:]:
             jump_match = re.match(jump_pattern, jump, re.IGNORECASE)
             if jump_match:
@@ -515,7 +515,7 @@ class Graph(object):
 
     def get_entering_nodes(self, node):
         """Returns all nodes that have an edge that enter the specificed node"""
-        enter_edge_pattern = re.compile('edge_(?P<begin_node>\w+)_{0}_(?P<iterator>\w+)'.format(node))
+        enter_edge_pattern = re.compile(r'edge_(?P<begin_node>\w+)_{0}_(?P<iterator>\w+)'.format(node))
         enter_nodes = []
         for index, edge in enumerate(self.edges):
             enter_match = re.match(enter_edge_pattern, edge)
@@ -526,7 +526,7 @@ class Graph(object):
 
     def get_entering_edges(self, node):
         """Returns all edges that enter the specificed node"""
-        enter_edge_pattern = re.compile('edge_(?P<begin_node>\w+)_{0}_(?P<iterator>\w+)'.format(node))
+        enter_edge_pattern = re.compile(r'edge_(?P<begin_node>\w+)_{0}_(?P<iterator>\w+)'.format(node))
         enter_edges = []
         for index, edge in enumerate(self.edges):
             if re.match(enter_edge_pattern, edge):
@@ -535,7 +535,7 @@ class Graph(object):
 
     def get_exiting_edges(self, node):
         """Returns all edges that exit the specificed node"""
-        exit_edge_pattern = re.compile('edge_{0}_(?P<end_node>\w+)_(?P<iterator>\w+)'.format(node))
+        exit_edge_pattern = re.compile(r'edge_{0}_(?P<end_node>\w+)_(?P<iterator>\w+)'.format(node))
         exit_edges = []
         for index, edge in enumerate(self.edges):
             if re.match(exit_edge_pattern, edge):
@@ -544,7 +544,7 @@ class Graph(object):
 
     def get_exiting_nodes(self, node):
         """Returns all nodes that have an edge leaving the specificed node"""
-        exit_edge_pattern = re.compile('edge_{0}_(?P<end_node>\w+)_(?P<iterator>\w+)'.format(node))
+        exit_edge_pattern = re.compile(r'edge_{0}_(?P<end_node>\w+)_(?P<iterator>\w+)'.format(node))
         exit_nodes = []
         for index, edge in enumerate(self.edges):
             exit_match = re.match(exit_edge_pattern, edge)
@@ -624,7 +624,7 @@ class Graph(object):
             raise
         out = temp_data == self.data
         out_list = [self.current_node, path, out]
-        print(("The assertion that the data remains unchanged,\n"
+        print((r"The assertion that the data remains unchanged,\n"
               "for node {0} following path {1} is {2}".format(*out_list)))
         return out
 
@@ -711,7 +711,7 @@ class StringGraph(Graph):
                                        "A list of strings with no \\n, created with string.splitlines()"],
                   "current_node":'String',
                   "state":[1,0],
-                  "data":"This is a test string\n it has to have multiple lines \n and many characters 34%6\n^",
+                  "data":r"This is a test string\n it has to have multiple lines \n and many characters 34%6\n^",
                   "edge_2_to_1":edge_2_to_1,
                   "edge_1_to_2":edge_1_to_2
                  }

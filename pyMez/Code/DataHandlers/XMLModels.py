@@ -242,7 +242,7 @@ def get_XML_text(tag_name,path=None,text=None):
         f=open(path,'r')
         text=f.read()
     tag_match=re.search(
-    '<%s>(?P<XML_text>\w+)</%s>'%(tag_name,tag_name),
+    r'<%s>(?P<XML_text>\w+)</%s>'%(tag_name,tag_name),
      text)
     return tag_match.group('XML_text')
 
@@ -282,7 +282,7 @@ def determine_instrument_type_from_string(string):
                 text=f.read()
                 if re.search(string,text):
                     tag_match=re.search(
-                    '<Instrument_Type>(?P<instrument_type>\w+)</Instrument_Type>',
+                    r'<Instrument_Type>(?P<instrument_type>\w+)</Instrument_Type>',
                     text)
                     try:
                         return tag_match.group('instrument_type')
@@ -890,7 +890,7 @@ class DataTable(XMLBase):
         #print(text_list)
         for item in text_list:
             try:
-                match=re.search('(?P<attribute_name>\w+)=',item)
+                match=re.search(r'(?P<attribute_name>\w+)=',item)
                 name=match.group('attribute_name')
                 #print(name)
                 attribute_names.append(name)
@@ -986,7 +986,7 @@ class FileRegister(XMLBase):
             temp_Id = IP_address
             path_list = parsed_URL[2].split('/')
             file_extension = path_list[-1].split('.')[-1]
-            if len(Id_cache) is 0:
+            if len(Id_cache) == 0:
                 for index, part in enumerate(path_list):
                     if index < len(path_list) - 1:
                         temp_Id = temp_Id + '.' + '11'
@@ -1004,7 +1004,7 @@ class FileRegister(XMLBase):
             # print path_list
             while place <= len(path_list):
                 # If the Id_cache is empty assign the rest of the Id.
-                if len(Id_cache) is 0:
+                if len(Id_cache) == 0:
                     for index, part in enumerate(path_list[place:]):
                         if index < len(path_list[place:]) - 1:
                             temp_Id = temp_Id + '.' + '11'
@@ -1251,7 +1251,7 @@ class Metadata(XMLBase):
             self.document=self.FileRegister.document
             # delete old processing instructions
             for node in self.document.childNodes:
-                if node.nodeType is 7:
+                if node.nodeType == 7:
                     self.document.removeChild(node)
                     node.unlink()
             # add in the default xsl
@@ -1579,7 +1579,7 @@ class InstrumentState(XMLBase):
         # print text_list
         for item in text_list:
             try:
-                match = re.search('(?P<attribute_name>\w+)=', item)
+                match = re.search(r'(?P<attribute_name>\w+)=', item)
                 name = match.group('attribute_name')
                 # print name
                 attribute_names.append(name)
